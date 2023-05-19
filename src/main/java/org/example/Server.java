@@ -10,20 +10,21 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 public class Server {
 
     private static final int DEFAULT_THREAD_POOL_SIZE = 64;
     private static final int DEFAULT_PORT = 9999;
+    public int threadPoolSize;
 
     public Server() {
         this(DEFAULT_THREAD_POOL_SIZE);
     }
 
     public Server(int threadPoolSize) {
-
+        this.threadPoolSize = threadPoolSize;
     }
 
     public void start() throws IOException {
@@ -31,7 +32,7 @@ public class Server {
     }
 
     public void start(int port) throws IOException {
-        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(DEFAULT_THREAD_POOL_SIZE);
+        ExecutorService executor = Executors.newFixedThreadPool(DEFAULT_THREAD_POOL_SIZE);
         final var serverSocket = new ServerSocket(port);
         while (true) {
             final var socket = serverSocket.accept();
